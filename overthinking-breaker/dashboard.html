@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overthinking Breaker — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── App Layout ── -->
+<div class="app-layout">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand"><span>🧠</span> Overthinking Breaker</div>
+    <div class="topbar-right">
+      <div class="xp-bar">
+        ⚡ <span id="xpLabel">0 XP</span>
+        <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+      </div>
+      <div class="user-chip">
+        <div class="avatar" id="avatarInitial">S</div>
+        <span id="usernameDisplay">student</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-item active" onclick="showPage('tasks', this)">
+      <span class="nav-icon">📋</span> Tasks
+    </div>
+    <div class="nav-item" onclick="showPage('analytics', this)">
+      <span class="nav-icon">📊</span> Analytics
+    </div>
+    <div class="nav-item" onclick="showPage('badges', this)">
+      <span class="nav-icon">🏆</span> Badges
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- ── Tasks Page ── -->
+    <div class="page active" id="page-tasks">
+      <div class="flex items-center justify-between mb-16">
+        <div class="page-title">📋 My Tasks</div>
+        <div class="flex gap-8">
+          <span class="tag tag-cyan" id="activeTaskCount">0 active</span>
+          <span class="tag tag-warn" id="overthinkingCount">0 overthinking</span>
+        </div>
+      </div>
+
+      <!-- Add Task -->
+      <div class="add-task-form">
+        <div class="form-group">
+          <input type="text" id="newTaskName" placeholder="What do you need to work on?" maxlength="80" />
+        </div>
+        <div class="form-group" style="width:160px">
+          <select id="newTaskCategory">
+            <option value="study">📚 Study</option>
+            <option value="assignment">📝 Assignment</option>
+            <option value="project">💻 Project</option>
+            <option value="reading">📖 Reading</option>
+            <option value="other">🔧 Other</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="addTask()" style="white-space:nowrap">+ Add Task</button>
+      </div>
+
+      <!-- Task List -->
+      <div class="task-list" id="taskList">
+        <div class="empty-state" id="emptyTasks">
+          <div class="empty-icon">🎯</div>
+          <p>No tasks yet. Add one above to get started.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Analytics Page ── -->
+    <div class="page" id="page-analytics">
+      <div class="page-title">📊 Analytics</div>
+
+      <div class="grid-4 mb-16">
+        <div class="stat-card purple">
+          <div class="stat-label">Tasks Added</div>
+          <div class="stat-value" id="statTasksAdded">0</div>
+          <div class="stat-sub">this session</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value" id="statCompleted">0</div>
+          <div class="stat-sub">tasks done</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="stat-label">Overthinking Events</div>
+          <div class="stat-value" id="statOverthinking">0</div>
+          <div class="stat-sub">detected</div>
+        </div>
+        <div class="stat-card cyan">
+          <div class="stat-label">Mini-Actions Used</div>
+          <div class="stat-value" id="statMiniActions">0</div>
+          <div class="stat-sub">breakthroughs</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Overthinking by Task</div>
+          <div class="chart-bar-container" id="overthinkingChart">
+            <div class="empty-state" style="padding:20px">
+              <p>No data yet. Start working on tasks.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-title">Time Spent per Task (min)</div>
+          <div class="chart-bar-container" id="timeChart">
+            <div class="empty-state" style="padding:20px">
+              <p>No data yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-20">
+        <div class="section-title">Completed After Mini-Action</div>
+        <div id="miniActionSuccess">
+          <div class="empty-state" style="padding:20px"><p>No completions yet.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Badges Page ── -->
+    <div class="page" id="page-badges">
+      <div class="page-title">🏆 Badges & Level</div>
+
+      <div class="level-display">
+        <div class="level-circle" id="levelCircle">1</div>
+        <div class="level-info">
+          <div class="level-title" id="levelTitle">Rookie Thinker</div>
+          <div class="level-sub" id="levelSub">0 / 100 XP to next level</div>
+          <div class="xp-progress-bar mt-16">
+            <div class="xp-progress-fill" id="levelXpFill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Your Badges</div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+
+    <!-- ── Settings Page ── -->
+    <div class="page" id="page-settings">
+      <div class="page-title">⚙️ Settings</div>
+      <div class="card" style="max-width:480px">
+        <div class="section-title">Overthinking Detection</div>
+
+        <div class="form-group mt-16">
+          <label>Inactivity Threshold (seconds)</label>
+          <input type="number" id="settingInactivity" value="30" min="10" max="300"
+            style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;outline:none;width:100%" />
+        </div>
+
+        <div class="form-group mt-16">
+          <label>Tab Switch Threshold (count)</label>
+          <input type="number" id="settingTabSwitch" value="3" min="1" max="20"
+            style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;outline:none;width:100%" />
+        </div>
+
+        <div class="form-group mt-16">
+          <label>Edit Thrash Threshold (edits)</label>
+          <input type="number" id="settingEditThrash" value="5" min="2" max="30"
+            style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:14px;outline:none;width:100%" />
+        </div>
+
+        <button class="btn btn-primary mt-16" onclick="saveSettings()">Save Settings</button>
+
+        <div class="divider"></div>
+        <div class="section-title">Danger Zone</div>
+        <button class="btn btn-danger btn-sm" onclick="clearAllData()">🗑️ Clear All Session Data</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── Overthinking Popup ── -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <div class="popup-header">
+      <span class="popup-icon">⚠️</span>
+      <div>
+        <div class="popup-title">Overthinking Detected!</div>
+        <div class="popup-subtitle" id="popupSubtitle">You've been stuck on this task.</div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:4px">Pick a mini-action to break the block:</p>
+    <div class="mini-steps" id="miniStepsList"></div>
+    <div class="popup-actions">
+      <button class="btn btn-secondary btn-sm" onclick="dismissPopup()">Skip for now</button>
+      <button class="btn btn-primary btn-sm" onclick="markTaskDone()">✅ Mark Task Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast Container ── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="analytics.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
