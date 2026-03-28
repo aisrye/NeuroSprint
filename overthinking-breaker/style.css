@@ -442,11 +442,11 @@ body {
 
 .add-task-form input, .add-task-form select {
   width: 100%;
-  background: #1e1e3f;
-  border: 1px solid #3d3d7a;
+  background: #252547;
+  border: 1px solid #4a4a7a;
   border-radius: 10px;
   padding: 10px 14px;
-  color: #f1f5f9;
+  color: #ffffff;
   font-size: 14px;
   outline: none;
   appearance: none;
@@ -458,11 +458,12 @@ body {
 }
 
 .add-task-form select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 32px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .add-task-form input:focus, .add-task-form select:focus {
@@ -471,8 +472,10 @@ body {
 }
 
 .add-task-form select option {
-  background: #1e1e3f;
-  color: #f1f5f9;
+  background: #252547;
+  color: #ffffff;
+  padding: 8px;
+  font-weight: 600;
 }
 
 /* ── Overthinking Popup ── */

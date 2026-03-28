@@ -8,8 +8,8 @@
 
 // ── Settings ──
 function loadSettings() {
-  try { return Object.assign({ inactivity: 30, tabSwitch: 3, editThrash: 5 }, JSON.parse(localStorage.getItem('otb_settings') || '{}')); }
-  catch { return { inactivity: 30, tabSwitch: 3, editThrash: 5 }; }
+  try { return Object.assign({ inactivity: 300, tabSwitch: 10, editThrash: 10 }, JSON.parse(localStorage.getItem('otb_settings') || '{}')); }
+  catch { return { inactivity: 300, tabSwitch: 10, editThrash: 10 }; }
 }
 
 function saveSettings() {
@@ -209,7 +209,6 @@ function checkOverthinking(task) {
 // ── Render ──
 function renderTasks() {
   const list = document.getElementById('taskList');
-  const empty = document.getElementById('emptyTasks');
   const activeTasks = tasks.filter(t => t.status !== 'done');
   const overthinkingTasks = tasks.filter(t => t.status === 'overthinking');
 
@@ -217,13 +216,12 @@ function renderTasks() {
   document.getElementById('overthinkingCount').textContent = `${overthinkingTasks.length} overthinking`;
 
   if (tasks.length === 0) {
-    empty.style.display = 'block';
-    list.innerHTML = '';
-    list.appendChild(empty);
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <p>No tasks yet. Add one above to get started.</p>
+    </div>`;
     return;
   }
-
-  empty.style.display = 'none';
 
   const categoryIcons = { study: '📚', assignment: '📝', project: '💻', reading: '📖', other: '🔧' };
 
