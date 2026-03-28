@@ -85,13 +85,13 @@ function addTask() {
 function startTask(id) {
   if (activeTaskId === id) return;
 
+  const task = tasks.find(t => t.id === id);
+  if (!task || task.status === 'done') return;
+
   // Pause previous
   if (activeTaskId) pauseTask(activeTaskId);
 
   activeTaskId = id;
-  const task = tasks.find(t => t.id === id);
-  if (!task || task.status === 'done') return;
-
   task.status = 'active';
   taskTimers[id] = { startTime: Date.now(), elapsed: task.elapsed || 0 };
 
@@ -455,3 +455,7 @@ loadTasks();
 renderTasks();
 updateXPBar(loadAnalytics().xp);
 lastLevel = getLevelInfo(loadAnalytics().xp).level;
+
+document.getElementById('newTaskName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addTask();
+});

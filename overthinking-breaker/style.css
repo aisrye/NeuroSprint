@@ -428,8 +428,8 @@ body {
 
 /* ── Add Task Form ── */
 .add-task-form {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: #13132b;
+  border: 1px solid #3d3d7a;
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
@@ -442,20 +442,38 @@ body {
 
 .add-task-form input, .add-task-form select {
   width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: #1e1e3f;
+  border: 1px solid #3d3d7a;
   border-radius: 10px;
   padding: 10px 14px;
-  color: var(--text);
+  color: #f1f5f9;
   font-size: 14px;
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.add-task-form input::placeholder {
+  color: #94a3b8;
+}
+
+.add-task-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
 }
 
 .add-task-form input:focus, .add-task-form select:focus {
   border-color: var(--neon);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
 }
 
-.add-task-form select option { background: var(--surface2); }
+.add-task-form select option {
+  background: #1e1e3f;
+  color: #f1f5f9;
+}
 
 /* ── Overthinking Popup ── */
 .popup-overlay {
